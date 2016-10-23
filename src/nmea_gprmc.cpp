@@ -64,7 +64,7 @@ typedef struct {
     char    lat_direct;
     double  lon;
     char    lon_direct;
-    double  sog;
+    double  speed;
     double  cog;
     int     date;
     double  mag_variation;
@@ -78,19 +78,25 @@ typedef struct {
 int checksum(const char* s);
 // 打印错误信息
 int print_error(int err);
+
 // 打印 GPS坐标速度时间戳
 void print_gps_point(FILE* outfile, gprmc_format* gps_point);
+double degree_minute2dec_degrees(double deg);
 
+// c_string 字符串替换
+char* cs_replace(char* cs, const char* str1, const char* str2);
+// c_string 多重字符串替换
+char* multi_replace(char* cs, const char* str1, const char* str2);
 
 using namespace std;
 int main(int argc, char* argv[])
 {
 
     // 从数据读取一行
-    char line[512] = "$GPRMC,183859,A,2938.861000,N,11951.912000,E,39.00,34.06,20161006,,,D*7A";
+    char line_buf[512] = "$GPRMC,145431.00,A,2913.211670,N,11926.852964,E,000.0,,221016,,,A*73";
 
     if (2 == argc)
-        strcpy(line, argv[1]);   // 接受一个 参数输入数据
+        strcpy(line_buf, argv[1]);   // 接受一个 参数输入数据
 
 
     gprmc_format rmc;
@@ -99,13 +105,13 @@ int main(int argc, char* argv[])
     char tempstr[512];
     char finalstr[512];
 
-    if ('$' != line[0]) {
+    if ('$' != line_buf[0]) {
         print_error(1);
         return -1;
 
     } else {
 
-        char* pch = strrchr(line, '*');
+        char* pch = strrchr(line_buf, '*');
         if (pch != NULL) {
             *pch = '\0';
             rmc.mode = *(pch - 1);
@@ -113,7 +119,7 @@ int main(int argc, char* argv[])
             rmc.chksum = strtol(pch, &pch, 16);
             // printf("%X\n", chksum);
 
-            if (rmc.chksum != checksum(line + 1)) {
+            if (rmc.chksum != checksum(line_buf + 1)) {
                 print_error(2);
                 return -1;
             }
@@ -123,7 +129,10 @@ int main(int argc, char* argv[])
         }
 
 
-        pch = strtok(line, ",");
+        if (strstr(line_buf, ",,"))
+            multi_replace(line_buf, ",,", ",|,");
+
+        pch = strtok(line_buf, ",");
         if ((pch != NULL) && !strcmp(pch, "$GPRMC")) {
             // printf("%s\n", pch);    //GPRMC
 
@@ -146,7 +155,7 @@ int main(int argc, char* argv[])
             rmc.lon_direct = *pch;
 
             pch = strtok(NULL, ",");
-            rmc.sog  = atof(pch);
+            rmc.speed  = atof(pch);
 
             pch = strtok(NULL, ",");
             rmc.cog  = atof(pch);
@@ -165,6 +174,9 @@ int main(int argc, char* argv[])
             return -1;
 
         }
+
+
+
     }
 
     // 测试重新生成 GPRMC 数据，校验值会变化
@@ -176,7 +188,7 @@ int main(int argc, char* argv[])
             rmc.lat_direct,
             rmc.lon,
             rmc.lon_direct,
-            rmc.sog,
+            rmc.speed,
             rmc.cog,
             rmc.date,
             rmc.mode
@@ -236,12 +248,16 @@ int print_error(int err)
 }
 
 
+
 void print_gps_point(FILE* outfile, gprmc_format* gps_point)
 {
 
-    fprintf(outfile, "%.5f\t", gps_point->lat / 100);       // 纬度
-    fprintf(outfile, "%.5f\t", gps_point->lon / 100);       // 经度度
-    fprintf(outfile, "%.1f\t", gps_point->sog * 1.852);     // 时速:节换算公里
+    double lat = degree_minute2dec_degrees(gps_point->lat);
+    double lon = degree_minute2dec_degrees(gps_point->lon);
+
+    fprintf(outfile, "%.6f\t", lat);       // 纬度
+    fprintf(outfile, "%.6f\t", lon);        // 经度
+    fprintf(outfile, "%.1f\t", gps_point->speed * 1.852);     // 时速:节换算公里
 
 
 
@@ -249,8 +265,6 @@ void print_gps_point(FILE* outfile, gprmc_format* gps_point)
     char time_str [80] = "";
     int date = gps_point->date;
     int time = (int)gps_point->rcv_time;
-    if (date < 2000 * 10000)
-        date += 2000 * 10000;
 
     sprintf(time_str, "%d-%02d-%02d %02d:%02d:%02d",
             date / 10000, (date % 10000) / 100,  date % 100,
@@ -260,6 +274,47 @@ void print_gps_point(FILE* outfile, gprmc_format* gps_point)
     fprintf(outfile, "%s\n", time_str);
 
 
+}
+
+
+// 经纬度ddmm.mmmm，度分格式 转换成 10进制 度小数
+double degree_minute2dec_degrees(double deg)
+{
+    deg = (deg / 100.0 - (int)deg / 100) * 100.0 / 60.0 + (int)deg / 100 ;
+    return deg;
+}
+
+
+// c_string 字符串替换
+char* cs_replace(char* cs, const char* str1, const char* str2)
+{
+    char* ret = cs;
+    char* pc = new char[strlen(cs) + 1];
+
+    char* pch = strstr(cs, str1); // 找到替换处
+    if (pch == NULL)
+        return pch;
+
+    // 从目标出重新组合
+    strcpy(pc, cs);     // 复制副本
+    strcpy(pch, str2);
+    strcat(pch + strlen(str2), pc + (pch - cs) + strlen(str1));
+
+    delete[] pc;
+
+    return ret;
+}
+
+// c_string 多重字符串替换
+char* multi_replace(char* cs, const char* str1, const char* str2)
+{
+    char* pch = strstr(cs, str1); // 检查是否要替换
+    if (pch == NULL)
+        return pch;
+
+    while (strstr(cs, str1))
+        cs_replace(cs, str1, str2);
+    return cs;
 }
 
 
