@@ -3,14 +3,26 @@
 		使用说明  一个参数，参数为一行GPRMC数据
 		
 		例子:
-		nmea_gprmc.exe  $GPRMC,145142,A,2928.877000,N,11934.548000,E,20.00,223.94,20161001,,,D*45
+		nmea_gprmc  $GPRMC,060947.00,A,2912.680607,N,11932.222854,E,002.3,288.3,231016,,,A*51
+
+		Out:
+		$GPRMC,60947.00,A,2912.680607,N,11932.222854,E,2.30,288.3,231016,,,A*51
+		纬度    经度    时速(Km/H)      时间戳
+		29.211343       119.537048      4.3     23-10-16 06:09:47
+
+
+![](https://github.com/hongwenjun/nmea_gprmc/blob/master/img/nmea_gprmc.png) 
+# NMEA GPRMC 格式图解，NMEA_GPRMC.H 是本图文本格式
+https://github.com/hongwenjun/nmea_gprmc/blob/master/img/NMEA_GPRMC.H
+		
+		
 		
 		
 ![](https://github.com/hongwenjun/nmea_gprmc/blob/master/img/bdgps_in_china_google.jpg)  
 		
 # 百度导航记录的轨迹文件GPS数据是火星坐标,，使用google地图和Bing地图中国版无偏差
 		5143e676-9d9d-43c6-8fb2-abfe62f4fecb.bin.gz
-# 使用工具 https://github.com/hongwenjun/TrajectoryCombine 提取
+	使用工具 https://github.com/hongwenjun/TrajectoryCombine 提取
 		
 		纬度    经度    时速(Km/H)      时间戳
 		29.20859        119.54156       0.0     2016-10-23 15:29:23
