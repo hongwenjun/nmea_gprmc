@@ -44,7 +44,7 @@ http://www.google.cn/maps/dir/29.20859%09119.54156/29.20384%09119.53863/29.21070
 		$GPRMC,153015,A,2920.863000,N,11954.167000,E,3.00,0.00,20161023,,,D*7C
 		$PTUBA,168.68,,17,GPS,,12.00,F,F*22
 		
-http://www.google.cn/maps/dir/29.20863000%09 119.54168000
+http://www.google.cn/maps/dir/29.20863000%09119.54168000
 		
 # 本工具 https://github.com/hongwenjun/nmea_gprmc (编写中) 可以提取转换
 		
@@ -83,3 +83,6 @@ https://www.google.com/maps/place/29°12'43.8"N+119°32'10.8"E/@29.2126606,119.5
 https://www.google.com/maps/place/29°12'40.8"N+119°32'13.4"E/@29.211343,119.5348593
 
 ![](https://github.com/hongwenjun/nmea_gprmc/blob/master/img/GPS_NMEA_in_google.jpg)  
+
+# 以上相关 GPS数据文件已经提供测试 URL如下
+https://github.com/hongwenjun/nmea_gprmc/tree/master/test_nmea
