@@ -1,20 +1,21 @@
-C/C++ Ê¹ÓÃChinaMapShift¿â ²âÊÔ»¥×ª: µØÇòWGS-84 »ğĞÇGCJ-02 °Ù¶ÈBD-09
+#C/C++ ä½¿ç”¨ChinaMapShiftåº“ æµ‹è¯•äº’è½¬: åœ°çƒWGS-84 ç«æ˜ŸGCJ-02 ç™¾åº¦BD-09
 
 
-**ÖØµãÄÚÈİ**±ØÓ¦-ÖĞ¹úµØÍ¼ ²ÉÓÃµÄÊÇ»ğĞÇ×ø±ê
-http://cn.bing.com/ditu/
+**é‡ç‚¹å†…å®¹**å¿…åº”-ä¸­å›½åœ°å›¾ é‡‡ç”¨çš„æ˜¯ç«æ˜Ÿåæ ‡
+	http://cn.bing.com/ditu/
 	
-	**ÖØµãÄÚÈİ**NMEA Tools ²É¼¯µÄ¶È·Ö¸ñÊ½ÒªÏÈ×ª³ÉĞ¡Êı¸ñÊ½
-	**ÖØµãÄÚÈİ**ÔÙ×ª³É»ğĞÇ×ø±ê£¬²ÅÄÜÔÚÖĞ¹úµØÍ¼ÉÏ¶ÔÓ¦¡£
-Ëã·¨¿âÖ»ÄÜ×Ô¼ºÏÂÔØÁË	
-https://github.com/Dronaldo17/ChinaMapShift
+**é‡ç‚¹å†…å®¹**NMEA Tools é‡‡é›†çš„åº¦åˆ†æ ¼å¼è¦å…ˆè½¬æˆå°æ•°æ ¼å¼
+**é‡ç‚¹å†…å®¹**å†è½¬æˆç«æ˜Ÿåæ ‡ï¼Œæ‰èƒ½åœ¨ä¸­å›½åœ°å›¾ä¸Šå¯¹åº”ã€‚
+	ç®—æ³•åº“åªèƒ½è‡ªå·±ä¸‹è½½äº†	
+	https://github.com/Dronaldo17/ChinaMapShift
+
 	Algorithm for the map offset problem in China. 
-	**ÖØµãÄÚÈİ**½â¾öÖĞ¹úµØÍ¼Æ«ÒÆÎÊÌâµÄËã·¨¡£
+**é‡ç‚¹å†…å®¹**è§£å†³ä¸­å›½åœ°å›¾åç§»é—®é¢˜çš„ç®—æ³•ã€‚
 	
-![±ØÓ¦-ÖĞ¹úµØÍ¼ ²ÉÓÃµÄÊÇ»ğĞÇ×ø±ê](https://github.com/hongwenjun/nmea_gprmc/blob/master/WGS2GCJ/WGS2GCJ.png) 
+![å¿…åº”-ä¸­å›½åœ°å›¾ é‡‡ç”¨çš„æ˜¯ç«æ˜Ÿåæ ‡](https://github.com/hongwenjun/nmea_gprmc/blob/master/WGS2GCJ/WGS2GCJ.png) 
 
 ***
-²âÊÔ´úÂë
+æµ‹è¯•ä»£ç 
 ```
 #include <iostream>
 #include <string>
@@ -40,31 +41,31 @@ using namespace std;
 int main()
 {
 
-    puts("µØÇòWGS-84 ×ª »ğĞÇGCJ-02 ×ª  °Ù¶ÈBD-09");
+    puts("åœ°çƒWGS-84 è½¬ ç«æ˜ŸGCJ-02 è½¬  ç™¾åº¦BD-09");
 
     Location gps = { 119.465265, 29.1934702};
-    cout << setprecision(9) << "µØÇòWGS-84: "  << gps.lat << "  " << gps.lng << endl;
+    cout << setprecision(9) << "åœ°çƒWGS-84: "  << gps.lat << "  " << gps.lng << endl;
 
     gps = transformFromWGSToGCJ(gps);
-    cout << "»ğĞÇGCJ-02: "  << gps.lat << "  " << gps.lng << endl;
+    cout << "ç«æ˜ŸGCJ-02: "  << gps.lat << "  " << gps.lng << endl;
 
     gps = bd_encrypt(gps);
-    cout << "°Ù¶È BD-09: "  << gps.lat << "  " << gps.lng << endl;
+    cout << "ç™¾åº¦ BD-09: "  << gps.lat << "  " << gps.lng << endl;
 
     cout << endl << endl;
 
 
 
-    puts("°Ù¶ÈBD-09  ×ª »ğĞÇGCJ-02 ×ª  µØÇòWGS-84");
+    puts("ç™¾åº¦BD-09  è½¬ ç«æ˜ŸGCJ-02 è½¬  åœ°çƒWGS-84");
 
     gps = { 119.476936, 29.196518};
-    cout << "°Ù¶È BD-09: "  << gps.lat << "  " << gps.lng << endl;
+    cout << "ç™¾åº¦ BD-09: "  << gps.lat << "  " << gps.lng << endl;
 
     gps = bd_decrypt(gps);
-    cout << "»ğĞÇGCJ-02: "  << gps.lat << "  " << gps.lng << endl;
+    cout << "ç«æ˜ŸGCJ-02: "  << gps.lat << "  " << gps.lng << endl;
 
     gps = transformFromGCJToWGS(gps);
-    cout << "µØÇòWGS-84: "  << gps.lat << "  " << gps.lng << endl;
+    cout << "åœ°çƒWGS-84: "  << gps.lat << "  " << gps.lng << endl;
 
     return 0;
 }
@@ -73,24 +74,25 @@ int main()
 ```
 ***
 ```
-µØÇòWGS-84 ×ª »ğĞÇGCJ-02 ×ª  °Ù¶ÈBD-09
-µØÇòWGS-84: 29.1934702  119.465265
-»ğĞÇGCJ-02: 29.1908196  119.470341
-°Ù¶È BD-09: 29.1965172  119.476936
+åœ°çƒWGS-84 è½¬ ç«æ˜ŸGCJ-02 è½¬  ç™¾åº¦BD-09
+åœ°çƒWGS-84: 29.1934702  119.465265
+ç«æ˜ŸGCJ-02: 29.1908196  119.470341
+ç™¾åº¦ BD-09: 29.1965172  119.476936
 
 
-°Ù¶ÈBD-09  ×ª »ğĞÇGCJ-02 ×ª  µØÇòWGS-84
-°Ù¶È BD-09: 29.196518  119.476936
-»ğĞÇGCJ-02: 29.1908195  119.470342
-µØÇòWGS-84: 29.1934702  119.465265
+ç™¾åº¦BD-09  è½¬ ç«æ˜ŸGCJ-02 è½¬  åœ°çƒWGS-84
+ç™¾åº¦ BD-09: 29.196518  119.476936
+ç«æ˜ŸGCJ-02: 29.1908195  119.470342
+åœ°çƒWGS-84: 29.1934702  119.465265
 
-ÒÔÉÏÊÇÊä³ö½á¹û£¬Ê¹ÓÃ°Ù¶ÈAPIµØÍ¼È¡µÄµã£¬ÄÜ×ªµ½WGS-84×ø±ê£¬ÔÚ maps.google.comÉÏµØÍ¼¶ÔÓ¦¡£ 
-GoogleµØÍ¼ÖĞ¹ú°æ£¬·½±ã°ÑÊäÈë¼¸¸ö»ğĞÇ×ø±ê£¬Í¨¹ıÈçÏÂ·½Ê½Á¬½ÓÆğÀ´£¬%09ÊÇ×ªÒå·û
+ä»¥ä¸Šæ˜¯è¾“å‡ºç»“æœï¼Œä½¿ç”¨ç™¾åº¦APIåœ°å›¾å–çš„ç‚¹ï¼Œèƒ½è½¬åˆ°WGS-84åæ ‡ï¼Œåœ¨ maps.google.comä¸Šåœ°å›¾å¯¹åº”ã€‚ 
+Googleåœ°å›¾ä¸­å›½ç‰ˆï¼Œæ–¹ä¾¿æŠŠè¾“å…¥å‡ ä¸ªç«æ˜Ÿåæ ‡ï¼Œé€šè¿‡å¦‚ä¸‹æ–¹å¼è¿æ¥èµ·æ¥ï¼Œ%09æ˜¯è½¬ä¹‰ç¬¦
 http://www.google.cn/maps/dir/29.1934702%09119.465265/29.1908196%09119.470341/29.1965172%09119.476936/
 
 ```
-Ïà¹ØÁ´½Ó
-https://github.com/hongwenjun/nmea_gprmc
-https://github.com/hongwenjun/TrajectoryCombine
+	ç›¸å…³é“¾æ¥
+	https://github.com/hongwenjun/nmea_gprmc
+	
+	https://github.com/hongwenjun/TrajectoryCombine
 
  
