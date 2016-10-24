@@ -1,4 +1,4 @@
-#include <iostream>    // 数据流输入／输出
+﻿#include <iostream>    // 数据流输入／输出
 #include <string>      // 字符串类
 #include <algorithm>   // STL 通用算法
 #include <vector>      // STL 动态数组容器
@@ -93,7 +93,16 @@ int main(int argc, char* argv[])
 {
 
     // 从数据读取一行
-    char line_buf[512] = "$GPRMC,145431.00,A,2913.211670,N,11926.852964,E,000.0,,221016,,,A*73";
+    const char* gpc = "$GPRMC,060947.00,A,2912.680607,N,11932.222854,E,002.3,288.3,231016,,,A*51";
+    char line_buf[512] = {0} ;
+
+
+    if (1 == argc) {
+
+        printf("Usage: nmea_gprmc  %s\n", gpc);
+        return 0;
+    }
+
 
     if (2 == argc)
         strcpy(line_buf, argv[1]);   // 接受一个 参数输入数据
@@ -114,7 +123,6 @@ int main(int argc, char* argv[])
         char* pch = strrchr(line_buf, '*');
         if (pch != NULL) {
             *pch = '\0';
-            rmc.mode = *(pch - 1);
             pch++;
             rmc.chksum = strtol(pch, &pch, 16);
             // printf("%X\n", chksum);
@@ -163,11 +171,14 @@ int main(int argc, char* argv[])
             pch = strtok(NULL, ",");
             rmc.date  = atoi(pch);
 
-            // 一般空
+            // 一般为空
+            pch = strtok(NULL, ",");
             rmc.mag_variation   = 0;
+            pch = strtok(NULL, ",");
             rmc.mag_var_direct  = 'W';
 
-            rmc.mode = rmc.mode; // 之前已经读到
+            pch = strtok(NULL, ",");
+            rmc.mode =  *pch;
 
         } else {
             print_error(4);
@@ -180,7 +191,7 @@ int main(int argc, char* argv[])
     }
 
     // 测试重新生成 GPRMC 数据，校验值会变化
-    sprintf(tempstr, "%s,%06.0f,%c,%.5f,%c,%.5f,%c,%.2f,%.1f,%06u,,,%c",
+    sprintf(tempstr, "%s,%0.2f,%c,%.6f,%c,%.6f,%c,%.2f,%03.1f,%06u,,,%c",
             "GPRMC",
             rmc.rcv_time,
             rmc.status,
@@ -245,6 +256,8 @@ int print_error(int err)
     }
 
     printf("请检查是否 NMEA 183 数据!\n");
+
+    return err;
 }
 
 
