@@ -1,15 +1,19 @@
-# nmea_gprmc
-		
-		使用说明  一个参数，参数为一行GPRMC数据
-		
-		例子:
-		nmea_gprmc  $GPRMC,060947.00,A,2912.680607,N,11932.222854,E,002.3,288.3,231016,,,A*51
+# gprmc
+本工具从NMEA文件里读取GPRMC的GPS时间戳  BY Hong Wenjun
 
-		Out:
-		$GPRMC,60947.00,A,2912.680607,N,11932.222854,E,2.30,288.3,231016,,,A*51
-		纬度    经度    时速(Km/H)      时间戳
-		29.211343       119.537048      4.3     23-10-16 06:09:47
+Usage: gprmc.exe  [NMEA.txt]  [gps.txt]  [8402]
 
+输出文件不填，结果显示在屏幕上
+*   WGS-84 和 GCJ-02 的 EMEA 打印转换第三个参数 code 定义
+*   02  表示 GCJ-02;
+*   84  表示 WGS-84;
+*
+*   code 定义 默认 8402
+*   8484: 输入WGS-84 度分格式, 输出WGS-84 度小数
+*   8402: 输入WGS-84 度分格式, 输出GCJ-02 火星坐标
+*
+*   0202: 输入GCJ-02 火星坐标, 输出GCJ-02 火星坐标
+*   0284: 输入GCJ-02 火星坐标, 输出WGS-84 度小数
 ***
 
 ![](https://github.com/hongwenjun/nmea_gprmc/blob/master/img/nmea_gprmc.png) 
