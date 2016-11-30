@@ -5,6 +5,7 @@
 #include <ctype.h>      // 字符处理
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 /*
 //        由于$GPRMC比较重要，所以重点讲解：

@@ -192,19 +192,43 @@ void print_gps_point(FILE* outfile, gprmc_format gps_point, int code)
 
     fprintf(outfile, "%.6f\t", lat);       // 纬度
     fprintf(outfile, "%.6f\t", lon);        // 经度
-    fprintf(outfile, "%.1f\t", gps_point.speed * 1.852);     // 时速:节换算公里
+
+    double nm_to_km = 1.852;  // 时速:节换算公里
+    if (in_code == 02)
+        nm_to_km = 1.0;       // CJ-02 记录是公里
+    fprintf(outfile, "%.1f\t", gps_point.speed * nm_to_km);
 
 
     // UTC 时间转本地时间等有空实现
-//   strftime(time_str, 80, "%Y-%m-%d %H:%M:%S", timeinfo);
+
     char time_str [80] = "";
     int date = gps_point.date;
     int time = (int)gps_point.rcv_time;
 
-    sprintf(time_str, "%d-%02d-%02d %02d:%02d:%02d",
-            date / 10000, (date % 10000) / 100,  date % 100,
-            time / 10000, (time % 10000) / 100,  time % 100);
+    if (in_code == 02) {
+        sprintf(time_str, "%d-%02d-%02d %02d:%02d:%02d",
+                date / 10000, (date % 10000) / 100,  date % 100,
+                time / 10000, (time % 10000) / 100,  time % 100);
+    } else {
+        sprintf(time_str, "%d-%02d-%02d %02d:%02d:%02d",
+                2000 + date % 100, (date % 10000) / 100,  date / 10000,
+                time / 10000, (time % 10000) / 100,  time % 100);
 
+        struct tm gmt;
+        sscanf(time_str, "%d-%d-%d %d:%d:%d",
+               &gmt.tm_year, &gmt.tm_mon, &gmt.tm_mday,
+               &gmt.tm_hour, &gmt.tm_min, &gmt.tm_sec);
+        gmt.tm_year -= 1900;
+        gmt.tm_mon -= 1;
+
+        time_t timet;
+        timet = mktime(&gmt) + 8 * 3600;
+
+        struct tm* timeinfo = localtime(&timet);
+
+        strftime(time_str, 80, "%Y-%m-%d %H:%M:%S", timeinfo);
+
+    }
 
     fprintf(outfile, "%s\n", time_str);
 }
