@@ -1,59 +1,92 @@
-#include <iostream>
+﻿#include <stdio.h>
 #include <string.h>
-#include <iostream>
+#include <time.h>
+#include "china_shift.h"
 
-using namespace std;
-
-
-typedef struct {
-    double lng;
-    double lat;
-} Location;
-
-int main()
+// 本地时间转换转换UCT时间   2016-12-01 07:11:27 ==> 2016-11-30T23:11:27Z
+char* time_str_local2UTC(char* time_str)
 {
+    if (strlen(time_str) < 19)
+        return NULL;
 
-    char  input[] = "29.212143   119.471453  5.0    2016-10-23 16:11:27";
+    struct tm rawtm;
+    sscanf(time_str, "%d-%d-%d %d:%d:%d",
+           &rawtm.tm_year, &rawtm.tm_mon, &rawtm.tm_mday,
+           &rawtm.tm_hour, &rawtm.tm_min, &rawtm.tm_sec);
+    rawtm.tm_year -= 1900;
+    rawtm.tm_mon -= 1;
+
+    time_t timet;
+    timet = mktime(&rawtm);
+
+    struct tm* timeinfo = gmtime(&timet);
+    strftime(time_str, strlen(time_str) + 2, "%Y-%m-%dT%H:%M:%SZ", timeinfo);
+
+    return time_str;
+
+}
+
+//  格式化gps_csv行 空格 或者 , 分隔的如下行
+//  29.212903   119.471784  4.0 2016-10-23 16:12:02
+//  29.21525, 119.467489, 36.0, 2016-10-23 16:14:28
+//  转换成  gpx_line轨迹节点行
 //  <trkpt lat="29.213713" lon="119.472105"><ele></ele><speed>1</speed><time>2016-12-02T08:18:18</time></trkpt>
+
+char* gps_csv_to_gpx_line(char* gpx_line, const char* gps_csv, bool GCJToWGS)
+{
 
     double  lat, lon, speed;
     char date[32], time[32];
 
-    sscanf(input, "%lf %lf %lf %s %s",  &lat, &lon, &speed, date, time);
+    if (strrchr(gps_csv, ','))
+        sscanf(gps_csv, "%lf,%lf,%lf,%s %s",  &lat, &lon, &speed, date, time);
+    else
+        sscanf(gps_csv, "%lf %lf %lf %s %s",  &lat, &lon, &speed, date, time);
 
-    /*
-        坐标转换 ， 速度 转换 ，时间 本地转 UTC
-
-    // Transform WGS-84 to GCJ-02 (Chinese encrypted coordination system)
-
-    //    typedef struct {
-    //        double lng;
-    //        double lat;
-    //    } Location;
-    //
-    //    Location transformFromWGSToGCJ(Location wgLoc);
-    //    Location transformFromGCJToWGS(Location gcLoc);
-    //    Location bd_encrypt(Location gcLoc);
-    //    Location bd_decrypt(Location bdLoc);
-
-
-    Location gps = { 119.465265, 29.1934702};
-    gps = transformFromGCJToWGS(gps);
-    */
-
-
-
+    //   坐标转换    速度转换    时间 本地转 UTC
     Location gps;
     gps.lat = lat;
     gps.lng = lon;
-//   gps = transformFromGCJToWGS(gps);
 
-    speed = speed / 3.6;
+    if (GCJToWGS == true)
+        gps = transformFromGCJToWGS(gps);  // 火星GCJ-02 转  地球WGS-84
 
-    cout << gps.lat << "\t" <<  gps.lng  << "\t" << speed << "\t" << date << "T" << time << "Z" << endl;
+    speed = speed * 1000 / 3600;        // Km/H 转换成 米/秒
+
+    strcat(date, " ");
+    strcat(date, time);
+    strcpy(time, date);
+    time_str_local2UTC(time);
+
+    // 格式化 GPX 轨迹节点行
+    char trkpt[6][64] = {
+        "<trkpt lat=\"", "\" lon=\"",
+        "\"><ele>", "</ele><speed>",
+        "</speed><time>", "</time></trkpt>"
+    };
+
+    sprintf(gpx_line, "%s%.6f%s%.6f%s%s%.6f%s%s%s\n",
+            trkpt[0], gps.lat, trkpt[1], gps.lng,
+            trkpt[2], trkpt[3], speed, trkpt[4],
+            time, trkpt[5]);
+
+    return gpx_line;
+}
+
+
+int main()
+{
+    char  input[] = "29.21525, 119.467489, 36.0, 2016-10-23 16:14:28";
+// 输出  <trkpt lat="29.217875" lon="119.462401"><ele></ele><speed>10.000000</speed><time>2016-10-23T08:14:28Z</time></trkpt>
+
+    char gpx_line[256];
+    gps_csv_to_gpx_line(gpx_line, input, true);  // bool GCJToWGS = true
+
+    printf("%s", gpx_line);
 
     return 0;
 }
+
 
 
 
