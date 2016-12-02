@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="https://github.com/hongwenjun">
+<name>test.gpx</name>
+<desc/>
+<trk>
+<trkseg>
+<trkpt lat="29.213713" lon="119.472105"><ele></ele><speed>1</speed><time>2016-12-02T08:18:18</time></trkpt>
+<trkpt lat="29.214613" lon="119.472296"><ele></ele><speed>2</speed><time>2016-12-02T08:19:18</time></trkpt>
+<trkpt lat="29.215558" lon="119.470590"><ele></ele><speed>3</speed><time>2016-12-02T08:20:18</time></trkpt>
+<trkpt lat="29.215189" lon="119.467048"><ele></ele><speed>4</speed><time>2016-12-02T08:21:18</time></trkpt>
+<trkpt lat="29.214759" lon="119.463115"><ele></ele><speed>5</speed><time>2016-12-02T08:22:18</time></trkpt>
+</trkseg>
+</trk>
+</gpx>
