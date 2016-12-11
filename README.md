@@ -1,14 +1,14 @@
 # gprmc
 本工具从NMEA文件里读取GPRMC的GPS时间戳  BY Hong Wenjun
 
-Usage: gprmc.exe  [NMEA.txt]  [gps.txt]  [8402]
+Usage: gprmc.exe  [NMEA.txt]  [gps.txt]  [8484]
 
 输出文件不填，结果显示在屏幕上
 *   WGS-84 和 GCJ-02 的 EMEA 打印转换第三个参数 code 定义
 *   02  表示 GCJ-02;
 *   84  表示 WGS-84;
 *
-*   code 定义 默认 8402
+*   code 定义 默认 8484
 *   8484: 输入WGS-84 度分格式, 输出WGS-84 度小数
 *   8402: 输入WGS-84 度分格式, 输出GCJ-02 火星坐标
 *
@@ -96,3 +96,22 @@ https://www.google.com/maps/place/29°12'40.8"N+119°32'13.4"E/@29.211343,119.53
 
 # 以上相关 GPS数据文件已经提供测试 URL如下
 https://github.com/hongwenjun/nmea_gprmc/tree/master/test_nmea
+
+
+# Google Earth 支持打开导入  kml   nmea  gpx 还有 txt格式
+
+    txt文件要自己指定精度 纬度 没有航迹。
+    nmea和gpx文件支持航迹比较方便。
+    gpx格式比较简单，支持转换还不错。
+
+![image](https://github.com/hongwenjun/TrajectoryCombine/raw/master/img/gpx_on_ge.jpg)
+
+# 工具执行命令
+***
+
+gprmc.exe  MAPBAR_NMEA_20161023152954-2-syn.nmea  gps.txt  0284
+
+将自动把 gps.txt 转换成 gps.txt.gpx
+并且 GPS里的火星坐标会转换成地球坐标
+然后把gpx 拉到Google地球将显示航迹轨迹
+***

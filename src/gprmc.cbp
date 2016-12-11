@@ -37,6 +37,7 @@
 		<Unit filename="gprmc.cpp" />
 		<Unit filename="gprmc.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="txt2gpx.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

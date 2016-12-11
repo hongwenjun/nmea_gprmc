@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
     else
         outfile = stdout;
 
-    int code = 8402;  // 定义在 print_gps_point里
+    int code = 8484;  // 定义在 print_gps_point里
     if (4 == argc) {
         if (atoi(argv[3]) > 0)
             code = atoi(argv[3]);
@@ -59,21 +59,39 @@ int main(int argc, char* argv[])
 
         }
     }
-    return 0;
 
+    fclose(outfile);
+
+    // gps_txt 转 gpx格式
+    if (2 < argc)  {
+        char filnename[FILENAME_MAX];
+
+        strcpy(filnename, argv[2]);
+        FILE* input = fopen(filnename, "r");
+
+        strcat(filnename, ".gpx");
+        FILE* gpxfile = fopen(filnename, "w");
+
+        int gpx_line =  gps_txt2gpx(input,  gpxfile);
+
+        fclose(input);
+        fclose(gpxfile);
+    }
+
+    return 0;
 }
 
 
 void help()
 {
-    printf("本工具从NMEA文件里读取GPRMC的GPS时间戳  BY Hong Wenjun\n\n");
-    printf("Usage: gprmc.exe  [NMEA.txt]  [gps.txt]  [8402]\n");
+    printf("本工具从NMEA文件里读取GPRMC的GPS时间戳(自动转换成gpx)  BY Hong Wenjun  2016.12.11\n\n");
+    printf("Usage: gprmc.exe  [NMEA.txt]  [gps.txt]  [8484]\n");
     printf("\n输出文件不填，结果显示在屏幕上\n");
     printf("*   WGS-84 和 GCJ-02 的 EMEA 打印转换第三个参数 code 定义\n"
            "*   02  表示 GCJ-02;\n"
            "*   84  表示 WGS-84;\n"
            "*\n"
-           "*   code 定义 默认 8402\n"
+           "*   code 定义 默认 8484\n"
            "*   8484: 输入WGS-84 度分格式, 输出WGS-84 度小数\n"
            "*   8402: 输入WGS-84 度分格式, 输出GCJ-02 火星坐标\n"
            "*\n"

@@ -96,7 +96,8 @@ char* cs_replace(char* cs, const char* str1, const char* str2);
 // c_string 多重字符串替换
 char* multi_replace(char* cs, const char* str1, const char* str2);
 
-
+// gps_txt 转 gpx格式
+int gps_txt2gpx(FILE* input, FILE* outfile);
 
 // 是否打印调试数据
 // #define DEBUG
