@@ -1,114 +1,15 @@
-<<<<<<< HEAD
-C/C++ Ê¹ÓÃChinaMapShift¿â ²âÊÔ»¥×ª: µØÇòWGS-84 »ðÐÇGCJ-02 °Ù¶ÈBD-09
-
-
-**ÖØµãÄÚÈÝ**±ØÓ¦-ÖÐ¹úµØÍ¼ ²ÉÓÃµÄÊÇ»ðÐÇ×ø±ê
-http://cn.bing.com/ditu/
-	
-	**ÖØµãÄÚÈÝ**NMEA Tools ²É¼¯µÄ¶È·Ö¸ñÊ½ÒªÏÈ×ª³ÉÐ¡Êý¸ñÊ½
-	**ÖØµãÄÚÈÝ**ÔÙ×ª³É»ðÐÇ×ø±ê£¬²ÅÄÜÔÚÖÐ¹úµØÍ¼ÉÏ¶ÔÓ¦¡£
-Ëã·¨¿âÖ»ÄÜ×Ô¼ºÏÂÔØÁË	
-https://github.com/Dronaldo17/ChinaMapShift
-	Algorithm for the map offset problem in China. 
-	**ÖØµãÄÚÈÝ**½â¾öÖÐ¹úµØÍ¼Æ«ÒÆÎÊÌâµÄËã·¨¡£
-	
-![±ØÓ¦-ÖÐ¹úµØÍ¼ ²ÉÓÃµÄÊÇ»ðÐÇ×ø±ê](https://github.com/hongwenjun/nmea_gprmc/blob/master/WGS2GCJ/WGS2GCJ.png) 
-
-***
-²âÊÔ´úÂë
-```
-#include <iostream>
-#include <string>
-#include <stdio.h>
-#include "china_shift.h"
-#include <iomanip>
-
-// Transform WGS-84 to GCJ-02 (Chinese encrypted coordination system)
-
-//    typedef struct {
-//        double lng;
-//        double lat;
-//    } Location;
-//
-//    Location transformFromWGSToGCJ(Location wgLoc);
-//    Location transformFromGCJToWGS(Location gcLoc);
-//    Location bd_encrypt(Location gcLoc);
-//    Location bd_decrypt(Location bdLoc);
-
-
-using namespace std;
-
-int main()
-{
-
-    puts("µØÇòWGS-84 ×ª »ðÐÇGCJ-02 ×ª  °Ù¶ÈBD-09");
-
-    Location gps = { 119.465265, 29.1934702};
-    cout << setprecision(9) << "µØÇòWGS-84: "  << gps.lat << "  " << gps.lng << endl;
-
-    gps = transformFromWGSToGCJ(gps);
-    cout << "»ðÐÇGCJ-02: "  << gps.lat << "  " << gps.lng << endl;
-
-    gps = bd_encrypt(gps);
-    cout << "°Ù¶È BD-09: "  << gps.lat << "  " << gps.lng << endl;
-
-    cout << endl << endl;
-
-
-
-    puts("°Ù¶ÈBD-09  ×ª »ðÐÇGCJ-02 ×ª  µØÇòWGS-84");
-
-    gps = { 119.476936, 29.196518};
-    cout << "°Ù¶È BD-09: "  << gps.lat << "  " << gps.lng << endl;
-
-    gps = bd_decrypt(gps);
-    cout << "»ðÐÇGCJ-02: "  << gps.lat << "  " << gps.lng << endl;
-
-    gps = transformFromGCJToWGS(gps);
-    cout << "µØÇòWGS-84: "  << gps.lat << "  " << gps.lng << endl;
-
-    return 0;
-}
-
-
-```
-***
-```
-µØÇòWGS-84 ×ª »ðÐÇGCJ-02 ×ª  °Ù¶ÈBD-09
-µØÇòWGS-84: 29.1934702  119.465265
-»ðÐÇGCJ-02: 29.1908196  119.470341
-°Ù¶È BD-09: 29.1965172  119.476936
-
-
-°Ù¶ÈBD-09  ×ª »ðÐÇGCJ-02 ×ª  µØÇòWGS-84
-°Ù¶È BD-09: 29.196518  119.476936
-»ðÐÇGCJ-02: 29.1908195  119.470342
-µØÇòWGS-84: 29.1934702  119.465265
-
-ÒÔÉÏÊÇÊä³ö½á¹û£¬Ê¹ÓÃ°Ù¶ÈAPIµØÍ¼È¡µÄµã£¬ÄÜ×ªµ½WGS-84×ø±ê£¬ÔÚ maps.google.comÉÏµØÍ¼¶ÔÓ¦¡£ 
-GoogleµØÍ¼ÖÐ¹ú°æ£¬·½±ã°ÑÊäÈë¼¸¸ö»ðÐÇ×ø±ê£¬Í¨¹ýÈçÏÂ·½Ê½Á¬½ÓÆðÀ´£¬%09ÊÇ×ªÒå·û
-http://www.google.cn/maps/dir/29.1934702%09119.465265/29.1908196%09119.470341/29.1965172%09119.476936/
-
-```
-Ïà¹ØÁ´½Ó
-https://github.com/hongwenjun/nmea_gprmc
-https://github.com/hongwenjun/TrajectoryCombine
-
- 
-=======
-#C/C++ ä½¿ç”¨ChinaMapShiftåº“ æµ‹è¯•äº’è½¬: åœ°çƒWGS-84 ç«æ˜ŸGCJ-02 ç™¾åº¦BD-09
+# C/C++ ä½¿ç”¨ChinaMapShiftåº“ æµ‹è¯•äº’è½¬: åœ°çƒWGS-84 ç«æ˜ŸGCJ-02 ç™¾åº¦BD-09
 
 
 **é‡ç‚¹å†…å®¹**å¿…åº”-ä¸­å›½åœ°å›¾ é‡‡ç”¨çš„æ˜¯ç«æ˜Ÿåæ ‡
-	http://cn.bing.com/ditu/
+http://cn.bing.com/ditu/
 	
-**é‡ç‚¹å†…å®¹**NMEA Tools é‡‡é›†çš„åº¦åˆ†æ ¼å¼è¦å…ˆè½¬æˆå°æ•°æ ¼å¼
-**é‡ç‚¹å†…å®¹**å†è½¬æˆç«æ˜Ÿåæ ‡ï¼Œæ‰èƒ½åœ¨ä¸­å›½åœ°å›¾ä¸Šå¯¹åº”ã€‚
-	ç®—æ³•åº“åªèƒ½è‡ªå·±ä¸‹è½½äº†	
-	https://github.com/Dronaldo17/ChinaMapShift
-
+	**é‡ç‚¹å†…å®¹**NMEA Tools é‡‡é›†çš„åº¦åˆ†æ ¼å¼è¦å…ˆè½¬æˆå°æ•°æ ¼å¼
+	**é‡ç‚¹å†…å®¹**å†è½¬æˆç«æ˜Ÿåæ ‡ï¼Œæ‰èƒ½åœ¨ä¸­å›½åœ°å›¾ä¸Šå¯¹åº”ã€‚
+ç®—æ³•åº“åªèƒ½è‡ªå·±ä¸‹è½½äº†	
+https://github.com/Dronaldo17/ChinaMapShift
 	Algorithm for the map offset problem in China. 
-**é‡ç‚¹å†…å®¹**è§£å†³ä¸­å›½åœ°å›¾åç§»é—®é¢˜çš„ç®—æ³•ã€‚
+	**é‡ç‚¹å†…å®¹**è§£å†³ä¸­å›½åœ°å›¾åç§»é—®é¢˜çš„ç®—æ³•ã€‚
 	
 ![å¿…åº”-ä¸­å›½åœ°å›¾ é‡‡ç”¨çš„æ˜¯ç«æ˜Ÿåæ ‡](https://github.com/hongwenjun/nmea_gprmc/blob/master/WGS2GCJ/WGS2GCJ.png) 
 
@@ -188,10 +89,6 @@ Googleåœ°å›¾ä¸­å›½ç‰ˆï¼Œæ–¹ä¾¿æŠŠè¾“å…¥å‡ ä¸ªç«æ˜Ÿåæ ‡ï¼Œé€šè¿‡å¦‚ä¸‹æ–¹å¼è¿
 http://www.google.cn/maps/dir/29.1934702%09119.465265/29.1908196%09119.470341/29.1965172%09119.476936/
 
 ```
-	ç›¸å…³é“¾æŽ¥
-	https://github.com/hongwenjun/nmea_gprmc
-	
-	https://github.com/hongwenjun/TrajectoryCombine
-
- 
->>>>>>> a283afdc88a6d5e5feb97cbdd1c97c4304217d55
+ç›¸å…³é“¾æŽ¥
+https://github.com/hongwenjun/nmea_gprmc
+https://github.com/hongwenjun/TrajectoryCombine
